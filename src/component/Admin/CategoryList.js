@@ -4,7 +4,7 @@ import "./categoryList.css";
 import { useSelector, useDispatch } from "react-redux";
 
 import {
-  getCategorys,
+  getCategories,
   clearErrors,
 } from "../../actions/categoryAction";
 import { useAlert } from "react-alert";
@@ -16,7 +16,7 @@ const CategoryList = ({ history }) => {
 
   const alert = useAlert();
 
-  const { error, categorys } = useSelector((state) => state.categorys);
+  const { error, categories } = useSelector((state) => state.categories);
   
   useEffect(() => {
     if (error) {
@@ -24,7 +24,7 @@ const CategoryList = ({ history }) => {
       dispatch(clearErrors());
     }
 
-    dispatch(getCategorys());
+    dispatch(getCategories());
   }, [dispatch, alert, error, history]);
   
   const columns = [
@@ -44,24 +44,24 @@ const CategoryList = ({ history }) => {
 
   const rows = [];
 
-  categorys &&
-    categorys.forEach((item, index) => {
+  categories &&
+    categories.forEach((item, index) => {
       rows.push({
         id: index+1,
         category_id: item.category_id,
         name: item.name,
     });
   });
-  console.log(categorys)
+  console.log(categories)
 
   return (
     <Fragment>
-      <MetaData title={`ALL CATEGORYS`} />
+      <MetaData title={`ALL CATEGORIES`} />
 
       <div className="dashboard">
         <SideBar />
         <div className="categoryListContainer">
-          <h1 id="categoryListHeading">ALL CATEGORYS</h1>
+          <h1 id="categoryListHeading">ALL CATEGORIES</h1>
 
           <DataGrid
             rows={rows}

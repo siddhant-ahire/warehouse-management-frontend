@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { DataGrid } from "@material-ui/data-grid";
 import { useSelector, useDispatch } from "react-redux";
-import "./newProduct.css";
+import "./addProduct.css";
 import {
   getWarehouses,
   clearErrors,
@@ -15,7 +14,7 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import SideBar from "./Sidebar";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
 import { createProduct } from "../../actions/productAction";
-import { getCategorys } from "../../actions/categoryAction";
+import { getCategories } from "../../actions/categoryAction";
 import { getSections } from "../../actions/sectionAction";
 
 
@@ -23,9 +22,9 @@ const AddProduct = ({ history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const { loading, error, success } = useSelector((state) => state.newProduct);
-  const { warehouseError, warehouses } = useSelector((state) => state.warehouses);
-  const { categorysError, categorys } = useSelector((state) => state.categorys);
-  const { sectionsError, sections } = useSelector((state) => state.sections);
+  const { warehouses } = useSelector((state) => state.warehouses);
+  const { categories } = useSelector((state) => state.categories);
+  const { sections } = useSelector((state) => state.sections);
   const [name, setName] = useState("");
   const [quantity, setQuantity] = useState("");
   const [section, setSection] = useState("");
@@ -40,27 +39,20 @@ const AddProduct = ({ history }) => {
     }
     if (success) {
       alert.success("Product Created Successfully");
-      history.push("/admin/dashboard");
       dispatch({ type: NEW_PRODUCT_RESET });
+      history.push("/products-list");
     }
     dispatch(getWarehouses());
-    dispatch(getCategorys());
+    dispatch(getCategories());
     dispatch(getSections());
   }, [dispatch, alert, error, history, success]);
 
   const createProductSubmitHandler = (e) => {
     e.preventDefault();
-
-    const myForm = new FormData();
-
-    myForm.set("name", name);
-    myForm.set("quantity", quantity);
-    myForm.set("category_id", category);
-    myForm.set("section_id", section);
-    dispatch(createProduct(myForm));
+    dispatch(createProduct({name, quantity, category_id: category, section_id: section}));
   };
 
-    console.log(warehouses,sections,categorys)
+    console.log(warehouses,sections,categories)
 
   return (
 <Fragment>
@@ -98,14 +90,14 @@ const AddProduct = ({ history }) => {
               <AccountTreeIcon />
               <select onChange={(e) => setCategory(e.target.value)}>
                 <option value="">Choose Category</option>
-                {categorys.map((cate) => (
+                {categories.map((cate) => (
                   <option key={cate.category_id} value={cate.category_id}>
                     {cate.name}
                   </option>
                 ))}
               </select>
             </div>
-            {/* <div>
+            <div>
               <AccountTreeIcon />
               <select onChange={(e) => setWarehouse(e.target.value)}>
                 <option value="">Choose Warehouse</option>
@@ -115,7 +107,7 @@ const AddProduct = ({ history }) => {
                   </option>
                 ))}
               </select>
-            </div> */}
+            </div>
             <div>
               <AccountTreeIcon />
               <select onChange={(e) => setSection(e.target.value)}>

@@ -14,6 +14,9 @@ import WarehouseList from "./component/Admin/WarehouseList";
 import SectionList from "./component/Admin/SectionList";
 import AddProduct from "./component/Admin/AddProduct";
 import CategoryList from "./component/Admin/CategoryList";
+import AddSection from "./component/Admin/AddSection";
+import AddWarehouse from "./component/Admin/AddWarehouse";
+import AddCategory from "./component/Admin/AddCategory";
 
 
 function App() {
@@ -46,15 +49,33 @@ function App() {
         />
         <ProtectedRoute
           exact
+          path="/add-warehouse"
+          isAdmin={true}
+          component={AddWarehouse}
+        />
+        <ProtectedRoute
+          exact
           path="/sections-list"
           isAdmin={true}
           component={SectionList}
         />
         <ProtectedRoute
           exact
+          path="/add-section"
+          isAdmin={true}
+          component={AddSection}
+        />
+        <ProtectedRoute
+          exact
           path="/category-list"
           isAdmin={true}
           component={CategoryList}
+        />
+        <ProtectedRoute
+          exact
+          path="/add-category"
+          isAdmin={true}
+          component={AddCategory}
         />
         <ProtectedRoute
           exact

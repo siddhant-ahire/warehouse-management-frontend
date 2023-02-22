@@ -3,9 +3,9 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 import { newProductReducer, productsReducer } from "./reducers/productReducer";
 import { userReducer } from "./reducers/userReducer";
-import { warehousesReducer } from "./reducers/warehouseReducer";
-import { sectionsReducer } from "./reducers/sectionReducer";
-import { categorysReducer } from "./reducers/categoryReducer";
+import { newWarehouseReducer, warehousesReducer } from "./reducers/warehouseReducer";
+import { newSectionReducer, sectionsReducer } from "./reducers/sectionReducer";
+import { categoriesReducer, newCategoryReducer } from "./reducers/categoryReducer";
 
 
 const reducer = combineReducers({
@@ -13,8 +13,11 @@ const reducer = combineReducers({
   newProduct: newProductReducer,
   user: userReducer,
   warehouses: warehousesReducer,
+  newWarehouse: newWarehouseReducer,
   sections: sectionsReducer,
-  categorys: categorysReducer
+  newSection: newSectionReducer,
+  categories: categoriesReducer,
+  newCategory: newCategoryReducer
 });
 
 let initialState = {
