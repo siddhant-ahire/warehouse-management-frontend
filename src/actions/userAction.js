@@ -2,6 +2,9 @@ import {
   LOGIN_REQUEST,
   LOGIN_FAIL,
   LOGIN_SUCCESS,
+  REGISTER_REQUEST,
+  REGISTER_FAIL,
+  REGISTER_SUCCESS,
   LOAD_USER_REQUEST,
   LOAD_USER_SUCCESS,
   LOAD_USER_FAIL,
@@ -29,6 +32,22 @@ export const login = (username, password) => async (dispatch) => {
     dispatch({ type: LOGIN_FAIL, payload: error.response.data.message });
   }
 };
+
+// Login
+export const register = (username, password) => async (dispatch) => {
+  try {
+    dispatch({ type: REGISTER_REQUEST });
+
+    const { data } = await apiClient.post(
+      `/user/register`,
+      { username, password },
+    );
+    dispatch({ type: REGISTER_SUCCESS, payload: data.data });
+  } catch (error) {
+    dispatch({ type: REGISTER_FAIL, payload: error.response.data.message });
+  }
+};
+
 
 // Load User
 export const loadUser = () => async (dispatch) => {

@@ -1,7 +1,6 @@
 import React, { Fragment, useRef, useState, useEffect } from "react";
 import "./LoginSignUp.css";
 import Loader from "../Layout/Loader/Loader";
-import { Link } from "react-router-dom";
 import MailOutlineIcon from "@material-ui/icons/MailOutline";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import FaceIcon from "@material-ui/icons/Face";
@@ -24,13 +23,6 @@ const LoginSignUp = ({ history, location }) => {
   const [loginUsername, setLoginUsername] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  const [user, setUser] = useState({
-    username: "",
-    password: "",
-  });
-
-  const { username, password } = user;
-
   const loginSubmit = (e) => {
     e.preventDefault();
     dispatch(login(loginUsername, loginPassword));
@@ -38,16 +30,7 @@ const LoginSignUp = ({ history, location }) => {
 
   const registerSubmit = (e) => {
     e.preventDefault();
-
-    const myForm = new FormData();
-
-    myForm.set("username", username);
-    myForm.set("password", password);
-    // dispatch(register(myForm));
-  };
-
-  const registerDataChange = (e) => {
-    setUser({ ...user, [e.target.name]: e.target.value });
+    dispatch(register(loginUsername, loginPassword));
   };
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
@@ -116,7 +99,6 @@ const LoginSignUp = ({ history, location }) => {
                     onChange={(e) => setLoginPassword(e.target.value)}
                   />
                 </div>
-                <Link to="/password/forgot">Forget Password ?</Link>
                 <input type="submit" value="Login" className="loginBtn" />
               </form>
               <form
@@ -133,7 +115,7 @@ const LoginSignUp = ({ history, location }) => {
                     required
                     name="username"
                     value={loginUsername}
-                    onChange={registerDataChange}
+                    onChange={(e) => setLoginUsername(e.target.value)}
                   />
                 </div>
                 <div className="signUpPassword">
@@ -143,8 +125,8 @@ const LoginSignUp = ({ history, location }) => {
                     placeholder="Password"
                     required
                     name="password"
-                    value={password}
-                    onChange={registerDataChange}
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
                   />
                 </div>
                 <input type="submit" value="Register" className="signUpBtn" />
