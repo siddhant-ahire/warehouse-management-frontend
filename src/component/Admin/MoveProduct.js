@@ -9,28 +9,24 @@ import { useAlert } from "react-alert";
 import MetaData from "../Layout/MetaData";
 import { Button } from "@material-ui/core";
 import AccountTreeIcon from "@material-ui/icons/AccountTree";
-import SpellcheckIcon from "@material-ui/icons/Spellcheck";
-import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import SideBar from "./Sidebar";
 import { NEW_PRODUCT_RESET } from "../../constants/productConstants";
-import { createProduct } from "../../actions/productAction";
-import { getCategories } from "../../actions/categoryAction";
+import { getProducts, moveProduct } from "../../actions/productAction";
 import { getSections } from "../../actions/sectionAction";
 
 
-const AddProduct = ({ history }) => {
+const MoveProduct = ({ history }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const { loading, error, success } = useSelector((state) => state.newProduct);
+  const { products } = useSelector((state) => state.products);
+
   const { warehouses } = useSelector((state) => state.warehouses);
-  const { categories } = useSelector((state) => state.categories);
   const { sections } = useSelector((state) => state.sections);
-  const [name, setName] = useState("");
   const [warehouseSections, setWarehouseSections] = useState([]);
-  const [quantity, setQuantity] = useState("");
   const [sectionEnable, setSectionEnable] = useState(true);
   const [section, setSection] = useState("");
-  const [category, setCategory] = useState("");
+  const [product, setProduct] = useState("");
   const [warehouse, setWarehouse] = useState("");
 
 
@@ -40,7 +36,7 @@ const AddProduct = ({ history }) => {
       dispatch(clearErrors());
     }
     if (success) {
-      alert.success("Product Created Successfully");
+      alert.success("Product Moved Successfully");
       dispatch({ type: NEW_PRODUCT_RESET });
       history.push("/products-list");
     }
@@ -49,17 +45,17 @@ const AddProduct = ({ history }) => {
       setSectionEnable(false);
       return
     }
+    dispatch(getProducts());
     dispatch(getWarehouses());
-    dispatch(getCategories());
     dispatch(getSections());
   }, [dispatch, alert, error, history, success, warehouse]);
 
-  const createProductSubmitHandler = (e) => {
+  const moveProductSubmitHandler = (e) => {
     e.preventDefault();
-    dispatch(createProduct({name, quantity, category_id: category, section_id: section}));
+    dispatch(moveProduct({product_id: product, new_section_id: section}));
   };
 
-    console.log(warehouses,sections,categories)
+    // console.log(warehouses,sections,categories)
 
   return (
 <Fragment>
@@ -70,36 +66,16 @@ const AddProduct = ({ history }) => {
           <form
             className="createProductForm"
             encType="multipart/form-data"
-            onSubmit={createProductSubmitHandler}
+            onSubmit={moveProductSubmitHandler}
           >
-            <h1>Create Product</h1>
-
-            <div>
-              <SpellcheckIcon />
-              <input
-                type="text"
-                placeholder="Product Name"
-                required
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div>
-              <AttachMoneyIcon />
-              <input
-                type="number"
-                placeholder="Quantity"
-                required
-                onChange={(e) => setQuantity(e.target.value)}
-              />
-            </div>
+            <h1>Move Product</h1>
             <div>
               <AccountTreeIcon />
-              <select onChange={(e) => setCategory(e.target.value)}>
-                <option value="" selected disabled>Choose Category</option>
-                {categories.map((cate) => (
-                  <option key={cate.category_id} value={cate.category_id}>
-                    {cate.name}
+              <select onChange={(e) => setProduct(e.target.value)}>
+                <option value="" selected disabled>Choose Product</option>
+                {products && products.map((prod) => (
+                  <option key={prod.product_id} value={prod.product_id}>
+                    {prod.product_name} (Qty: {prod.quantity})
                   </option>
                 ))}
               </select>
@@ -121,7 +97,7 @@ const AddProduct = ({ history }) => {
                 <option value="" selected disabled>Choose Section</option>
                 {warehouseSections.map((sec) => (
                   <option key={sec.section_id} value={sec.section_id}>
-                    {sec.name}
+                    {sec.name} (Qty: {sec.capacity})
                   </option>
                 ))}
               </select>
@@ -133,7 +109,7 @@ const AddProduct = ({ history }) => {
               type="submit"
               disabled={loading ? true : false}
             >
-              Create
+              Move
             </Button>
           </form>
         </div>
@@ -142,4 +118,4 @@ const AddProduct = ({ history }) => {
   );
 };
 
-export default AddProduct;
+export default MoveProduct;

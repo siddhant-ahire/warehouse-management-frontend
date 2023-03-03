@@ -78,6 +78,7 @@ const LoginSignUp = ({ history, location }) => {
                 </div>
                 <button ref={switcherTab}></button>
               </div>
+              <span>Username: admin & password: 123456</span>
               <form className="loginForm" ref={loginTab} onSubmit={loginSubmit}>
                 <div className="loginEmail">
                   <MailOutlineIcon />

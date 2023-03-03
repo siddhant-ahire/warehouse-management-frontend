@@ -5,6 +5,7 @@ import {
   NEW_PRODUCT_REQUEST,
   NEW_PRODUCT_SUCCESS,
   NEW_PRODUCT_FAIL,
+  MOVE_PRODUCT,
   CLEAR_ERRORS,
 } from "../constants/productConstants";
 import apiClient from "../http-client";
@@ -46,6 +47,28 @@ export const createProduct = (productData) => async (dispatch) => {
 
     dispatch({
       type: NEW_PRODUCT_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: NEW_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Moved Product
+export const moveProduct = (productData) => async (dispatch) => {
+  try {
+    dispatch({ type: NEW_PRODUCT_REQUEST });
+
+    const { data } = await apiClient.post(
+      `/product/move-product`,
+      productData,
+    );
+
+    dispatch({
+      type: MOVE_PRODUCT,
       payload: data,
     });
   } catch (error) {

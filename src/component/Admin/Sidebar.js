@@ -6,6 +6,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import PostAddIcon from "@material-ui/icons/PostAdd";
 import AddIcon from "@material-ui/icons/Add";
 import ImportExportIcon from "@material-ui/icons/ImportExport";
+import DriveFileMove from "@material-ui/icons/DriveEtaSharp";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import PeopleIcon from "@material-ui/icons/People";
@@ -73,6 +74,9 @@ const Sidebar = () => {
           </Link>
           <Link to="/products-list">
             <TreeItem nodeId="2" label="All" icon={<PostAddIcon />} />
+          </Link>
+          <Link to="/move-product">
+            <TreeItem nodeId="2" label="Move" icon={<DriveFileMove />} />
           </Link>
 
         </TreeItem>

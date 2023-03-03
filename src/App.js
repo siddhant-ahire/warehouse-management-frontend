@@ -13,6 +13,7 @@ import NotFound from "./component/Layout/Not Found/NotFound";
 import WarehouseList from "./component/Admin/WarehouseList";
 import SectionList from "./component/Admin/SectionList";
 import AddProduct from "./component/Admin/AddProduct";
+import MoveProduct from "./component/Admin/MoveProduct";
 import CategoryList from "./component/Admin/CategoryList";
 import AddSection from "./component/Admin/AddSection";
 import AddWarehouse from "./component/Admin/AddWarehouse";
@@ -88,6 +89,12 @@ function App() {
           path="/add-product"
           isAdmin={true}
           component={AddProduct}
+        />
+        <ProtectedRoute
+          exact
+          path="/move-product"
+          isAdmin={true}
+          component={MoveProduct}
         />
 
         <Route exact path="/login" component={LoginSignUp} />
